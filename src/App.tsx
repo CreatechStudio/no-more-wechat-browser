@@ -74,9 +74,9 @@ function App() {
 
     useEffect(() => {
         if (!isWechatBrowser() && link && !forceStay) {
-            window.location.replace(link);
+            redirect(link);
         }
-    }, [forceStay, setForceStay, link, setLink]);
+    }, [forceStay, setForceStay, link, setLink, redirect]);
 
     function handleCopyLink() {
         if (link) {
@@ -85,6 +85,13 @@ function App() {
             }).catch(() => {
                 toast.error(t["Could not copy clipboard"], {toastId: 'cncc'});
             });
+        }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    function redirect(url: URL) {
+        if ((checkHttps && isHttps || !checkHttps) && inAllowDomain) {
+            window.location.replace(url);
         }
     }
 
