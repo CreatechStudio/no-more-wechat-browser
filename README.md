@@ -1,73 +1,45 @@
-# React + TypeScript + Vite
+<h1 align="center">No More Wechat Browser</h1>
+<p align="center">一个轻量级的网页来避免你的网站被微信直接加载</p>
+<p align="center">
+中文 | <a href="./README_en.md">English</a>
+</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **注意：此项目处于早期开发阶段，没有未经大量测试，请谨慎使用**
 
-Currently, two official plugins are available:
+## 展示
+将此网站部署在你发送给用户的网页服务前，或使用 Cloudflare Redirect Rules 来自动转发。
+它会组织用户直接在微信浏览器中打开它而是显示以下页面，而在普通浏览器中打开此页面会自动转跳到目标地址。
+![show](img/show_zh.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 环境变量
+| 环境变量          | 描述                             | 默认值   |
+|---------------|--------------------------------|-------|
+| BG_URL        | 背景图片网址                         |       |
+| CHECK_HTTPS   | 是否检查目标地址使用 https 协议            | false |
+| ALLOW_DOMAINS | 受允许的目标域名，留空为允许所有，使用 ',' 分割多个域名 | 允许所有  |
+| SHOW_GITHUB   | 展示底部的项目 Github 链接              | true  |
+| FAVICON_URL   | 网页图标地址                         |       |
 
-## React Compiler
+## URL 参数
+| 参数     | 描述 | 默认值 |
+|--------| --- | ----- |
+| link   | 目标地址 | |
+| lang   | 显示语言 | 浏览器默认语言 |
+| force | 强制在非微信浏览器中不转跳 | false |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+> 注意：参数 `force` 理论上只应该在开发环境中使。
 
-## Expanding the ESLint configuration
+## 开发
+1. pnpm install
+2. pnpm run dev
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 使用的技术
+* [Node.js](https://nodejs.org/)
+* [React](https://react.dev)
+* [Vite](https://cn.vite.dev/)
+* [Typescript](https://www.typescriptlang.org/)
+* [MUI](https://mui.com/)
+* [PNPm](https://pnpm.io/)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## License
+**[MPL-2.0](./LICENSE)**

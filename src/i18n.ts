@@ -5,7 +5,7 @@ interface Dictionary<T> {
 const translation: Dictionary<Dictionary<string>> = {
     'zh-cn': {
         'Please open in browser': "请从浏览器打开",
-        "Currently not support view in Wechat. Please click more on top right corner and select `open in default browser`.": "微信内暂不支持直接访问，请点击右上角更多，选择\"在默认浏览器中打开\"",
+        "Currently not support view in Wechat. Please click more on top right corner and select `open in default browser`.": "暂不支持从微信内直接访问，请点击右上角更多，选择\"在默认浏览器中打开\"",
         "powered by front": "由",
         "powered by end": "强力驱动",
         "Copied to clipboard": "复制成功",
@@ -21,7 +21,7 @@ const translation: Dictionary<Dictionary<string>> = {
     },
     'en-us': {
         'Please open in browser': "Please open in browser",
-        "Currently not support view in Wechat. Please click more on top right corner and select `open in default browser`.": "Currently not support view in Wechat. Please click more on top right corner and select `open in default browser`.",
+        "Currently not support view in Wechat. Please click more on top right corner and select `open in default browser`.": "Currently not support to view in Wechat. Please click more on top right corner and select `open in default browser`.",
         "powered by front": "Powered by",
         "powered by end": "",
         "Copied to clipboard": "Copied to clipboard",
