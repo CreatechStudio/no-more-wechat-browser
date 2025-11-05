@@ -58,6 +58,10 @@ function App() {
 
     useEffect(() => {
         setIsHttps(link?.protocol === "https:");
+
+        if (!isWechatBrowser() && link) {
+            window.location.replace(link);
+        }
     }, [link, setLink]);
 
     function handleCopyLink() {
@@ -68,6 +72,11 @@ function App() {
                 toast.error(t["Could not copy clipboard"], {toastId: 'cncc'});
             });
         }
+    }
+
+    function isWechatBrowser() {
+        const ua = navigator.userAgent || '';
+        return /MicroMessenger/i.test(ua);
     }
 
     return (
