@@ -1,7 +1,6 @@
 import {defineConfig, loadEnv} from 'vite'
 import react from '@vitejs/plugin-react'
 import obfuscatorPlugin from "vite-plugin-javascript-obfuscator";
-import {viteSingleFile} from "vite-plugin-singlefile";
 
 const env = loadEnv("", ".", [
     "BG_URL",
@@ -19,36 +18,36 @@ export default defineConfig({
             apply: "build",
             options: {
                 compact: true,
-                controlFlowFlattening: false,
-                deadCodeInjection: false,
+                controlFlowFlattening: true,
+                controlFlowFlatteningThreshold: 1,
+                deadCodeInjection: true,
+                deadCodeInjectionThreshold: 1,
                 debugProtection: true,
-                debugProtectionInterval: 1,
+                debugProtectionInterval: 4000,
                 disableConsoleOutput: true,
                 identifierNamesGenerator: 'hexadecimal',
                 log: false,
-                numbersToExpressions: false,
+                numbersToExpressions: true,
                 renameGlobals: false,
-                selfDefending: false,
+                selfDefending: true,
                 simplify: true,
                 splitStrings: true,
-                splitStringsChunkLength: 10,
+                splitStringsChunkLength: 5,
                 stringArray: true,
-                stringArrayCallsTransform: false,
-                stringArrayCallsTransformThreshold: 0.5,
-                stringArrayEncoding: [],
+                stringArrayCallsTransform: true,
+                stringArrayEncoding: ['rc4'],
                 stringArrayIndexShift: true,
                 stringArrayRotate: true,
                 stringArrayShuffle: true,
-                stringArrayWrappersCount: 1,
-                stringArrayWrappersChainedCalls: true,
-                stringArrayWrappersParametersMaxCount: 2,
-                stringArrayWrappersType: 'variable',
-                stringArrayThreshold: 0.75,
-                transformObjectKeys: false,
+                stringArrayWrappersCount: 5,
+                stringArrayWrappersChainedCalls: true,    
+                stringArrayWrappersParametersMaxCount: 5,
+                stringArrayWrappersType: 'function',
+                stringArrayThreshold: 1,
+                transformObjectKeys: true,
                 unicodeEscapeSequence: false
             }
         }),
-        viteSingleFile()
     ],
     define: {
         'import.meta.env.BG_URL': JSON.stringify(env.BG_URL),
