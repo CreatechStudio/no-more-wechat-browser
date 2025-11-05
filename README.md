@@ -39,7 +39,7 @@
 * [Vite](https://cn.vite.dev/)
 * [Typescript](https://www.typescriptlang.org/)
 * [MUI](https://mui.com/)
-* [PNPm](https://pnpm.io/)
+* [pnpm](https://pnpm.io/)
 
 ## License
 **[MPL-2.0](./LICENSE)**

@@ -36,10 +36,10 @@ It will prevent users to open your website directly in Wechat browser and show f
 ## Technologies Used
 * [Node.js](https://nodejs.org/)
 * [React](https://react.dev)
-* [Vite](https://vite.dev/)
+* [Vite](https://cn.vite.dev/)
 * [Typescript](https://www.typescriptlang.org/)
-* [mui](https://mui.com/)
+* [MUI](https://mui.com/)
 * [pnpm](https://pnpm.io/)
 
 ## License
-> **[MPL-2.0](./LICENSE)**
+**[MPL-2.0](./LICENSE)**
