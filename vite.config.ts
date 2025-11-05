@@ -1,5 +1,6 @@
 import {defineConfig, loadEnv} from 'vite'
 import react from '@vitejs/plugin-react'
+import obfuscatorPlugin from "vite-plugin-javascript-obfuscator";
 
 const env = loadEnv("", ".", [
     "BG_URL",
@@ -11,7 +12,43 @@ const env = loadEnv("", ".", [
 
 // https://vite.dev/config/
 export default defineConfig({
-    plugins: [react()],
+    plugins: [
+        react(),
+        obfuscatorPlugin({
+            apply: "build",
+            options: {
+                compact: true,
+                controlFlowFlattening: true,
+                controlFlowFlatteningThreshold: 1,
+                deadCodeInjection: true,
+                deadCodeInjectionThreshold: 1,
+                debugProtection: true,
+                debugProtectionInterval: 4000,
+                disableConsoleOutput: true,
+                identifierNamesGenerator: 'hexadecimal',
+                log: false,
+                numbersToExpressions: true,
+                renameGlobals: false,
+                selfDefending: true,
+                simplify: true,
+                splitStrings: true,
+                splitStringsChunkLength: 5,
+                stringArray: true,
+                stringArrayCallsTransform: true,
+                stringArrayEncoding: ['rc4'],
+                stringArrayIndexShift: true,
+                stringArrayRotate: true,
+                stringArrayShuffle: true,
+                stringArrayWrappersCount: 5,
+                stringArrayWrappersChainedCalls: true,    
+                stringArrayWrappersParametersMaxCount: 5,
+                stringArrayWrappersType: 'function',
+                stringArrayThreshold: 1,
+                transformObjectKeys: true,
+                unicodeEscapeSequence: false
+            }
+        }),
+    ],
     define: {
         'import.meta.env.BG_URL': JSON.stringify(env.BG_URL),
         'import.meta.env.CHECK_HTTPS': JSON.stringify(env.CHECK_HTTPS),
