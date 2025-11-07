@@ -20,6 +20,8 @@ const translation: Dictionary<Dictionary<string>> = {
         "Redirecting...": "重定向中...",
         "Target link is not secure": "目标地址不安全",
         "Target is not allowed": "目标地址不被允许",
+        "Invalid URL": "错误的链接",
+        "There might be something wrong in target link": "目标地址不合理或存在错误",
         "You are in force stay mode now, which means that it will never redirect to target link and you can make test on it.": "你现在处于强制停留状态，这表示你将不会被从这个页面重定向到目标地址，你可以在此处进行调试"
     },
     'en-us': {
@@ -39,6 +41,8 @@ const translation: Dictionary<Dictionary<string>> = {
         "Redirecting...": "Redirecting...",
         "Target link is not secure": "Target link is not secure",
         "Target is not allowed": "Target is not allowed",
+        "Invalid URL": "Invalid URL",
+        "There might be something wrong in target link": "There might be something wrong in target link",
         "You are in force stay mode now, which means that it will never redirect to target link and you can make test on it.": "You are in force stay mode now, which means that it will never redirect to target link and you can make test on it."
     }
 }

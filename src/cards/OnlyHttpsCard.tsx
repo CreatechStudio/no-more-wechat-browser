@@ -1,0 +1,23 @@
+import {CardContent, Stack, Typography} from "@mui/material";
+import {useTranslation} from "../i18n.ts";
+
+export default function OnlyHttpsCard({
+    lang
+} : {
+    lang?: string;
+}) {
+    const t = useTranslation(lang);
+
+    return (
+        <CardContent>
+            <Stack sx={{width: '100%', p: 2, gap: 1.5, textAlign: 'start'}} justifyContent="center" alignItems="start">
+                <Typography gutterBottom variant="h5" component="div">
+                    {t['Not allowed protocol']}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary', pr: 4 }}>
+                    {t['Target link must use HTTPS']}
+                </Typography>
+            </Stack>
+        </CardContent>
+    );
+}

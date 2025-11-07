@@ -1,7 +1,14 @@
 import {Fragment, useEffect, useState} from "react";
-import {Button, Card, CardActions, CardContent, CardMedia, Stack, Typography} from "@mui/material";
-import {toast, ToastContainer} from "react-toastify";
+import {Card, CardMedia, Stack} from "@mui/material";
+import {ToastContainer} from "react-toastify";
 import {useTranslation} from "./i18n.ts";
+import OnlyHttpsCard from "./cards/OnlyHttpsCard.tsx";
+import MainCard from "./cards/MainCard.tsx";
+import NotAllowDomainsCard from "./cards/NotAllowDomainsCard.tsx";
+import NothingCard from "./cards/NothingCard.tsx";
+import BottomGithub from "./components/BottomGithub.tsx";
+import TopForceStay from "./components/TopForceStay.tsx";
+import InvalidUrlCard from "./cards/InvalidUrlCard.tsx";
 
 function App() {
     const [lang, setLang] = useState<string | undefined>();
@@ -15,16 +22,27 @@ function App() {
     const [showGithub, setShowGithub] = useState<boolean>(true);
     const [forceStay, setForceStay] = useState<boolean>(false);
     const [bgUrl, setBgUrl] = useState<string>("https://picsum.photos/345/140?random=1");
+    const [invalidUrl, setInvalidUrl] = useState<boolean>(false);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
         const url = searchParams.get("link");
         if (url) {
             let u = url;
-            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            if (!/^https?:\/\//i.test(url)) {
                 u = "https://" + url;
             }
-            setLink(new URL(decodeURIComponent(u)));
+            try {
+                const l = new URL(decodeURIComponent(u));
+                if (l.hostname) {
+                    setLink(l);
+                } else {
+                    setInvalidUrl(true);
+                }
+            } catch (err) {
+                setInvalidUrl(true);
+                console.log("Invalid URL:", err);
+            }
         }
         const lang = searchParams.get("lang");
         if (lang) {
@@ -91,6 +109,8 @@ function App() {
     useEffect(() => {
         if (!link) {
             setTitle(t['Missing redirect parameter']);
+        } else if (invalidUrl) {
+            setTitle(t['Invalid URL']);
         } else if (checkHttps && !isHttps) {
             setTitle(t['Target link is not secure']);
         } else if (!inAllowDomain) {
@@ -98,7 +118,7 @@ function App() {
         } else {
             setTitle(t['Redirecting...']);
         }
-    }, [checkHttps, inAllowDomain, isHttps, t, link]);
+    }, [checkHttps, inAllowDomain, isHttps, t, link, invalidUrl]);
 
     function setTitle(title: string) {
         const titleEle = document.getElementById('title');
@@ -107,19 +127,9 @@ function App() {
         }
     }
 
-    function handleCopyLink() {
-        if (link) {
-            navigator.clipboard.writeText(link.toString()).then(() => {
-                toast.success(t["Copied to clipboard"], {toastId: 'ctc'});
-            }).catch(() => {
-                toast.error(t["Could not copy clipboard"], {toastId: 'cncc'});
-            });
-        }
-    }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
     function redirect(url: URL) {
-        if ((checkHttps && isHttps || !checkHttps) && inAllowDomain) {
+        if ((checkHttps && isHttps || !checkHttps) && inAllowDomain && !invalidUrl) {
             window.location.replace(url);
         }
     }
@@ -144,94 +154,44 @@ function App() {
                         checkHttps && !isHttps ? (
                             <Fragment>
                                 {/* 仅允许 https */}
-                                <CardContent>
-                                    <Stack sx={{width: '100%', p: 2, gap: 1.5, textAlign: 'start'}} justifyContent="center" alignItems="start">
-                                        <Typography gutterBottom variant="h5" component="div">
-                                            {t['Not allowed protocol']}
-                                        </Typography>
-                                        <Typography variant="body2" sx={{ color: 'text.secondary', pr: 4 }}>
-                                            {t['Target link must use HTTPS']}
-                                        </Typography>
-                                    </Stack>
-                                </CardContent>
+                                <OnlyHttpsCard lang={lang}/>
                             </Fragment>
                         ) : (
                             inAllowDomain ? (
                                 <Fragment>
                                     {/* main */}
-                                    <CardContent>
-                                        <Stack sx={{width: '100%', p: 2, pb: 0, gap: 1.5, textAlign: 'start'}} justifyContent="center" alignItems="start">
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                {t['Please open in browser']}
-                                            </Typography>
-                                            <Typography variant="body2" sx={{ color: 'text.secondary', pr: 4 }}>
-                                                {t['Currently not support view in Wechat. Please click more on top right corner and select `open in default browser`.']}
-                                            </Typography>
-                                            <Typography variant="subtitle1" sx={{
-                                                color: 'text.secondary', textOverflow: 'ellipsis', overflow: 'hidden',
-                                                width: '90%', whiteSpace: 'nowrap'
-                                            }}>
-                                                <a href={link.toString()}>
-                                                    {link.toString()}
-                                                </a>
-                                            </Typography>
-                                        </Stack>
-                                    </CardContent>
-                                    <CardActions>
-                                        <Stack direction="row-reverse" sx={{width: '100%', p: 2}}>
-                                            <Button size="medium" onClick={handleCopyLink} variant="outlined">{t['Copy Link']}</Button>
-                                        </Stack>
-                                    </CardActions>
+                                    <MainCard lang={lang} link={link}/>
                                 </Fragment>
                             ) : (
                                 <Fragment>
                                     {/* 喜欢域控 */}
-                                    <CardContent>
-                                        <Stack sx={{width: '100%', p: 2, gap: 1.5, textAlign: 'start'}} justifyContent="center" alignItems="start">
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                {t['Not allowed target domain']}
-                                            </Typography>
-                                            <Typography variant="body2" sx={{ color: 'text.secondary', pr: 4 }}>
-                                                {t['Only allow redirecting to managed domains and subdomains']}
-                                            </Typography>
-                                        </Stack>
-                                    </CardContent>
+                                    <NotAllowDomainsCard lang={lang}/>
                                 </Fragment>
                             )
                         )
                     ) : (
-                        <Fragment>
-                            {/* 嘛也没有 */}
-                            <CardContent>
-                                <Stack sx={{width: '100%', p: 2, gap: 1.5, textAlign: 'start'}} justifyContent="center" alignItems="start">
-                                    <Typography gutterBottom variant="h5" component="div">
-                                        {t['Missing redirect parameter']}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ color: 'text.secondary', pr: 4 }}>
-                                        {t['Cannot find target link']}
-                                    </Typography>
-                                </Stack>
-                            </CardContent>
-                        </Fragment>
+                        invalidUrl ? (
+                            <Fragment>
+                                {/* 不合理的 URl */}
+                                <InvalidUrlCard lang={lang}/>
+                            </Fragment>
+                        ) : (
+                            <Fragment>
+                                {/* 嘛也没有 */}
+                                <NothingCard lang={lang}/>
+                            </Fragment>
+                        )
                     )
                 }
             </Card>
             {
                 showGithub ? (
-                    <Stack sx={{position: 'absolute', bottom: 15}}>
-                        <Typography variant="body2" component="p" color="textSecondary">
-                            {t['powered by front']} <a href="https://github.com/iewnfod/no-more-wechat-browser" target="_blank">no-more-wechat-browser</a> {t['powered by end']}
-                        </Typography>
-                    </Stack>
+                    <BottomGithub lang={lang}/>
                 ) : null
             }
             {
                 forceStay ? (
-                    <Stack sx={{position: 'absolute', top: 15}}>
-                        <Typography variant="body2" component="p" color="error">
-                            {t['You are in force stay mode now, which means that it will never redirect to target link and you can make test on it.']}
-                        </Typography>
-                    </Stack>
+                    <TopForceStay lang={lang}/>
                 ) : null
             }
             <ToastContainer/>
