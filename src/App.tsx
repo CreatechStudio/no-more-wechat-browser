@@ -20,7 +20,11 @@ function App() {
         const searchParams = new URLSearchParams(window.location.search);
         const url = searchParams.get("link");
         if (url) {
-            setLink(new URL(decodeURIComponent(url)));
+            let u = url;
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                u = "https://" + url;
+            }
+            setLink(new URL(decodeURIComponent(u)));
         }
         const lang = searchParams.get("lang");
         if (lang) {
