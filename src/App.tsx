@@ -1,7 +1,7 @@
-import {Fragment, useEffect, useState} from "react";
-import {Card, CardMedia, Stack} from "@mui/material";
-import {ToastContainer} from "react-toastify";
-import {useTranslation} from "./i18n.ts";
+import { Fragment, useEffect, useState } from "react";
+import { Card, CardMedia, Stack } from "@mui/material";
+import { ToastContainer } from "react-toastify";
+import { useTranslation } from "./i18n.ts";
 import OnlyHttpsCard from "./cards/OnlyHttpsCard.tsx";
 import MainCard from "./cards/MainCard.tsx";
 import NotAllowDomainsCard from "./cards/NotAllowDomainsCard.tsx";
@@ -88,7 +88,7 @@ function App() {
             setInAllowDomain(true);
         } else {
             if (link) {
-                for (let i = 0; i < allowDomains.length; i ++) {
+                for (let i = 0; i < allowDomains.length; i++) {
                     if (link.hostname.toLowerCase().endsWith('.' + allowDomains[i].toLowerCase()) || link.hostname.toLowerCase() === allowDomains[i].toLowerCase()) {
                         setInAllowDomain(true);
                         break;
@@ -156,36 +156,36 @@ function App() {
 
     function isWechatBrowser() {
         const ua = navigator.userAgent || '';
-        return /MicroMessenger/i.test(ua) || /XWEB/i.test(ua) || /MMWEBSDK/i.test(ua);
+        return /MicroMessenger/i.test(ua) || /XWEB/i.test(ua) || /MMWEBSDK/i.test(ua) || /AliApp\(DingTalk/i.test(ua);
     }
 
     return (
-        <Stack sx={{width: '100%', height: '100%'}} justifyContent="center" alignItems="center">
+        <Stack sx={{ width: '100%', height: '100%' }} justifyContent="center" alignItems="center">
             <Card sx={{ width: "90%", maxWidth: 345 }}>
                 <CardMedia
                     component="img"
                     alt=""
                     height="140"
                     image={bgUrl}
-                    sx={{userSelect: 'none'}}
+                    sx={{ userSelect: 'none' }}
                 />
                 {
                     link ? (
                         checkHttps && !isHttps ? (
                             <Fragment>
                                 {/* 仅允许 https */}
-                                <OnlyHttpsCard lang={lang}/>
+                                <OnlyHttpsCard lang={lang} />
                             </Fragment>
                         ) : (
                             inAllowDomain ? (
                                 <Fragment>
                                     {/* main */}
-                                    <MainCard lang={lang} link={link}/>
+                                    <MainCard lang={lang} link={link} />
                                 </Fragment>
                             ) : (
                                 <Fragment>
                                     {/* 喜欢域控 */}
-                                    <NotAllowDomainsCard lang={lang}/>
+                                    <NotAllowDomainsCard lang={lang} />
                                 </Fragment>
                             )
                         )
@@ -193,12 +193,12 @@ function App() {
                         invalidUrl ? (
                             <Fragment>
                                 {/* 不合理的 URl */}
-                                <InvalidUrlCard lang={lang}/>
+                                <InvalidUrlCard lang={lang} />
                             </Fragment>
                         ) : (
                             <Fragment>
                                 {/* 嘛也没有 */}
-                                <NothingCard lang={lang}/>
+                                <NothingCard lang={lang} />
                             </Fragment>
                         )
                     )
@@ -206,15 +206,15 @@ function App() {
             </Card>
             {
                 showGithub ? (
-                    <BottomGithub lang={lang}/>
+                    <BottomGithub lang={lang} />
                 ) : null
             }
             {
                 forceStay ? (
-                    <TopForceStay lang={lang}/>
+                    <TopForceStay lang={lang} />
                 ) : null
             }
-            <ToastContainer/>
+            <ToastContainer />
         </Stack>
     );
 }
